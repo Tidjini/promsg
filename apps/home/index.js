@@ -8,7 +8,7 @@ function index(request, response) {
         username: "THIS",
         context: "[HOME]",
         verb: "INDEX",
-        result: `PAGE SENDED FAILD\n${err}\n`,
+        result: `PAGE SENDED FAILD\n${err}`,
       });
       return;
     }

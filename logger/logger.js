@@ -8,8 +8,8 @@ const RESULTS = {
 };
 const EXCEPTION_PREFIX = "Exception, due to ";
 
-//LOGGER LOCATION DIRECTORY
-class Logger {
+//TODO LOGGER LOCATION DIRECTORY
+export default class Logger {
   //data to consume
   //date and time auto-generated
   //user is givin or undefined, who call the service (ip address, mac)
@@ -55,8 +55,8 @@ class Logger {
 }
 
 //Todo test
-Logger.log({
-  username: "Tidjin",
-  context: "[CONTEXT]",
-  verb: "GET LIST OF SAMPLES PRODUCT",
-});
+// Logger.log({
+//   username: "Tidjin",
+//   context: "[CONTEXT]",
+//   verb: "GET LIST OF SAMPLES PRODUCT",
+// });

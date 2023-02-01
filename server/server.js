@@ -1,4 +1,5 @@
-PORT = process.env.PORT || 7777;
+const PORT = process.env.PORT || 7777;
+const { Logger } = require("../logger");
 
 class Server {
   express;
@@ -7,11 +8,17 @@ class Server {
 
   static loadExpress() {
     //initialize express
-    console.log("intialize express");
     const express = require("express");
     const http = require("http");
     const expressApp = express();
     Server.express = http.createServer(expressApp);
+
+    Logger.log({
+      username: "THIS",
+      context: "[SERVER]",
+      verb: "EXPRESS",
+      result: "INITIALISATION SUCCESS",
+    });
   }
 
   static loadSocketIo() {

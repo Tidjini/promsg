@@ -9,7 +9,7 @@ const RESULTS = {
 const EXCEPTION_PREFIX = "Exception, due to ";
 
 //TODO LOGGER LOCATION DIRECTORY
-export default class Logger {
+class Logger {
   //data to consume
   //date and time auto-generated
   //user is givin or undefined, who call the service (ip address, mac)
@@ -17,7 +17,7 @@ export default class Logger {
   //function (avoir le total de tel produit (br) de 31/01/2020 a 31/01/2031)
   //results (fonction traitement correct ou pas) interception .. foreword .. get result .. send result success | failed ..
   static date = new Date(Date.now());
-  static filename = "Changelog";
+  static filename = "changes.log";
   static content = "";
   static buid(data) {
     const {
@@ -31,7 +31,7 @@ export default class Logger {
     Logger.content = `${Logger.date.toLocaleString()} | ${username} | ${context}  | ${verb}  | `;
 
     //todo later build real results
-    Logger.content += `${RESULTS.INTERCEPTION}\n`;
+    Logger.content += result || `${RESULTS.INTERCEPTION}\n`;
   }
 
   static log(data) {
@@ -60,3 +60,6 @@ export default class Logger {
 //   context: "[CONTEXT]",
 //   verb: "GET LIST OF SAMPLES PRODUCT",
 // });
+module.exports = {
+  Logger,
+};

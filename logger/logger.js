@@ -8,6 +8,7 @@ const RESULTS = {
 };
 const EXCEPTION_PREFIX = "Exception, due to ";
 
+//LOGGER LOCATION DIRECTORY
 class Logger {
   //data to consume
   //date and time auto-generated

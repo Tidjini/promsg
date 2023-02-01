@@ -23,14 +23,23 @@ class Server {
 
   static loadSocketIo() {
     //init with socket.io
-    console.log("intialize socket.io");
     const io = require("socket.io");
     Server.socketio = io(Server.express);
+    Logger.log({
+      username: "THIS",
+      context: "[SERVER]",
+      verb: "SOCKET.IO",
+      result: "INITIALISATION SUCCESS",
+    });
   }
   static startListening() {
-    console.log("start listening");
     Server.express.listen(PORT);
-    console.log("SERVER STRATING... ON PORT", PORT);
+    Logger.log({
+      username: "THIS",
+      context: "[SERVER]",
+      verb: `START LISTENING:${PORT}`,
+      result: "LISTENING ...",
+    });
   }
   static start() {
     Server.loadExpress();

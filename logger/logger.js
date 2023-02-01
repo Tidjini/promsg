@@ -31,7 +31,8 @@ class Logger {
     Logger.content = `${Logger.date.toLocaleString()} | ${username} | ${context}  | ${verb}  | `;
 
     //todo later build real results
-    Logger.content += result || `${RESULTS.INTERCEPTION}\n`;
+    Logger.content += result || `${RESULTS.INTERCEPTION}`;
+    Logger.content += "\n";
   }
 
   static log(data) {
@@ -47,7 +48,7 @@ class Logger {
   }
 
   static onLogSuccess() {
-    console.log("test passed with success (file writing)");
+    // console.log("test passed with success (file writing)");
   }
   static onLogFailed(error) {
     console.log(EXCEPTION_PREFIX, error);

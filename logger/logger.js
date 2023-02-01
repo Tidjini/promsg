@@ -9,40 +9,40 @@ const RESULTS = {
 const EXCEPTION_PREFIX = "Exception, due to ";
 
 class Logger {
-  date = new Date(Date.now());
-  filename = "Changelog";
-  content = "";
-  constructor(data) {
-    const { username, context, verb, filename } = data || {};
-    this.filename = filename || this.filename;
-    this.content = `${this.date.toLocaleString()} | ${username} | ${context}  | ${verb}  | `;
+  static date = new Date(Date.now());
+  static filename = "Changelog";
+  static content = "";
+  static buid(data) {
+    const {
+      username,
+      context,
+      verb,
+      result,
+      filename: otherFilename,
+    } = data || {};
+    Logger.filename = otherFilename || Logger.filename;
+    Logger.content = `${Logger.date.toLocaleString()} | ${username} | ${context}  | ${verb}  | `;
 
-    this.buildResult = this.buildResult.bind(this);
-    this.log = this.log.bind(this);
-    this.onLogSuccess = this.onLogSuccess.bind(this);
-    this.onLogFailed = this.onLogFailed.bind(this);
+    //todo later build real results
+    Logger.content += `${RESULTS.INTERCEPTION} SUCCESS\n`;
   }
 
-  buildResult(result) {
-    this.content += `${RESULTS.INTERCEPTION} SUCCESS\n`;
-    return this.content;
-  }
+  static log(data) {
+    Logger.buid(data);
 
-  log(result) {
-    this.content = this.buildResult(result);
-    fs.appendFile(this.filename, this.content, (error) => {
+    fs.appendFile(Logger.filename, Logger.content, (error) => {
       if (error) {
-        this.onLogFailed(error);
+        Logger.onLogFailed(error);
         return;
       }
-      this.onLogSuccess();
+      Logger.onLogSuccess();
     });
   }
 
-  onLogSuccess() {
+  static onLogSuccess() {
     console.log("test passed with success (file writing)");
   }
-  onLogFailed(error) {
+  static onLogFailed(error) {
     console.log(EXCEPTION_PREFIX, error);
   }
 }
@@ -53,8 +53,8 @@ class Logger {
 //function (avoir le total de tel produit (br) de 31/01/2020 a 31/01/2031)
 //results (fonction traitement correct ou pas) interception .. foreword .. get result .. send result success | failed ..
 
-new Logger({
+Logger.log({
   username: "Tidjin",
   context: "[CONTEXT]",
   verb: "GET LIST OF SAMPLES PRODUCT",
-}).log();
+});

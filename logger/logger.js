@@ -6,18 +6,44 @@ const RESULTS = {
   GET_RESULTS: "GET RESULTS",
   SEND_RESULTS: "SEND RESULTS",
 };
+const EXCEPTION_PREFIX = "Exception, due to ";
 
-class Log {
-  date = Date.now();
+class Logger {
+  date = new Date(Date.now());
+  filename = "Changelog";
   content = "";
-  constructor(username = "Unknowen", context = "GLOBAL", fun = "Unknowen") {
-    this.content = `${date} | ${username} | ${context}  | ${fun}  | `;
+  constructor(data) {
+    const { username, context, verb, filename } = data || {};
+    this.filename = filename || this.filename;
+    this.content = `${this.date.toLocaleString()} | ${username} | ${context}  | ${verb}  | `;
+
     this.buildResult = this.buildResult.bind(this);
+    this.log = this.log.bind(this);
+    this.onLogSuccess = this.onLogSuccess.bind(this);
+    this.onLogFailed = this.onLogFailed.bind(this);
   }
 
   buildResult(result) {
     this.content += `${RESULTS.INTERCEPTION} SUCCESS\n`;
     return this.content;
+  }
+
+  log(result) {
+    this.content = this.buildResult(result);
+    fs.appendFile(this.filename, this.content, (error) => {
+      if (error) {
+        this.onLogFailed(error);
+        return;
+      }
+      this.onLogSuccess();
+    });
+  }
+
+  onLogSuccess() {
+    console.log("test passed with success (file writing)");
+  }
+  onLogFailed(error) {
+    console.log(EXCEPTION_PREFIX, error);
   }
 }
 
@@ -27,22 +53,8 @@ class Log {
 //function (avoir le total de tel produit (br) de 31/01/2020 a 31/01/2031)
 //results (fonction traitement correct ou pas) interception .. foreword .. get result .. send result success | failed ..
 
-const content = Log().buildResult();
-
-const EXCEPTION_PREFIX = "Exception, due to ";
-
-fs.appendFile("./test.txt", content, (error) => {
-  if (error) console.log(EXCEPTION_PREFIX, error);
-  else {
-    console.log("test passed with success (file writing)");
-  }
-});
-
-// fs.readFile("./test.txt", (err, data) => {
-//   if (err) {
-//     console.log(EXCEPTION_PREFIX, err);
-//     return;
-//   }
-
-//   console.log(data);
-// });
+new Logger({
+  username: "Tidjin",
+  context: "[CONTEXT]",
+  verb: "GET LIST OF SAMPLES PRODUCT",
+}).log();

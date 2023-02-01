@@ -1,0 +1,27 @@
+{
+  "name": "promsg",
+  "version": "1.0.0",
+  "description": "Procom messages service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tidjini/promsg.git"
+  },
+  "keywords": [
+    "messages",
+    "notification",
+    "procom",
+    "promag",
+    "infrabitume",
+    "service"
+  ],
+  "author": "MESSAOUDI Tidjni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tidjini/promsg/issues"
+  },
+  "homepage": "https://github.com/Tidjini/promsg#readme"
+}

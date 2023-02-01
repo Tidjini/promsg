@@ -3,15 +3,17 @@ const { Logger } = require("../logger");
 
 class Server {
   express;
+  expServer;
+  expressApp;
   socketio;
   connections = [];
 
   static loadExpress() {
     //initialize express
-    const express = require("express");
+    Server.express = require("express");
     const http = require("http");
-    const expressApp = express();
-    Server.express = http.createServer(expressApp);
+    Server.expressApp = Server.express();
+    Server.expServer = http.createServer(Server.expressApp);
 
     Logger.log({
       username: "THIS",
@@ -24,7 +26,7 @@ class Server {
   static loadSocketIo() {
     //init with socket.io
     const io = require("socket.io");
-    Server.socketio = io(Server.express);
+    Server.socketio = io(Server.expServer);
     Logger.log({
       username: "THIS",
       context: "[SERVER]",
@@ -33,18 +35,34 @@ class Server {
     });
   }
   static startListening() {
-    Server.express.listen(PORT);
+    Server.expServer.listen(PORT);
     Logger.log({
       username: "THIS",
       context: "[SERVER]",
-      verb: `START LISTENING:${PORT}`,
+      verb: `LISTENING:${PORT}`,
       result: "LISTENING ...",
     });
   }
+
+  static setBodyParser() {
+    const bodyParser = require("body-parser");
+    Server.expressApp.use(Server.express.json());
+    Server.expressApp.use(bodyParser.urlencoded({ extended: true }));
+    Server.expressApp.use(bodyParser.json());
+    Server.expressApp.use(bodyParser.raw());
+    Logger.log({
+      username: "THIS",
+      context: "[SERVER]",
+      verb: `BODY-PARSER`,
+      result: "INITIALISATION SUCCESS",
+    });
+  }
+
   static start() {
     Server.loadExpress();
     Server.loadSocketIo();
     Server.startListening();
+    Server.setBodyParser();
   }
 }
 

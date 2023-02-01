@@ -9,6 +9,12 @@ const RESULTS = {
 const EXCEPTION_PREFIX = "Exception, due to ";
 
 class Logger {
+  //data to consume
+  //date and time auto-generated
+  //user is givin or undefined, who call the service (ip address, mac)
+  //context (procom-livriason)
+  //function (avoir le total de tel produit (br) de 31/01/2020 a 31/01/2031)
+  //results (fonction traitement correct ou pas) interception .. foreword .. get result .. send result success | failed ..
   static date = new Date(Date.now());
   static filename = "Changelog";
   static content = "";
@@ -24,7 +30,7 @@ class Logger {
     Logger.content = `${Logger.date.toLocaleString()} | ${username} | ${context}  | ${verb}  | `;
 
     //todo later build real results
-    Logger.content += `${RESULTS.INTERCEPTION} SUCCESS\n`;
+    Logger.content += `${RESULTS.INTERCEPTION}\n`;
   }
 
   static log(data) {
@@ -47,12 +53,7 @@ class Logger {
   }
 }
 
-//date and time auto-generated
-//user is givin or undefined, who call the service (ip address, mac)
-//context (procom-livriason)
-//function (avoir le total de tel produit (br) de 31/01/2020 a 31/01/2031)
-//results (fonction traitement correct ou pas) interception .. foreword .. get result .. send result success | failed ..
-
+//Todo test
 Logger.log({
   username: "Tidjin",
   context: "[CONTEXT]",

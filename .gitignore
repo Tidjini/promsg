@@ -1,0 +1,10 @@
+node_modules
+build
+production
+prod
+static
+media
+assets
+test.*
+test
+

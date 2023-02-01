@@ -3,17 +3,16 @@ const { Logger } = require("../logger");
 
 class Server {
   express;
-  expServer;
-  expressApp;
+  server;
+  app;
   socketio;
-  connections = [];
 
   static loadExpress() {
     //initialize express
     Server.express = require("express");
     const http = require("http");
-    Server.expressApp = Server.express();
-    Server.expServer = http.createServer(Server.expressApp);
+    Server.app = Server.express();
+    Server.server = http.createServer(Server.app);
 
     Logger.log({
       username: "THIS",
@@ -26,7 +25,7 @@ class Server {
   static loadSocketIo() {
     //init with socket.io
     const io = require("socket.io");
-    Server.socketio = io(Server.expServer);
+    Server.socketio = io(Server.server);
     Logger.log({
       username: "THIS",
       context: "[SERVER]",
@@ -35,7 +34,7 @@ class Server {
     });
   }
   static startListening() {
-    Server.expServer.listen(PORT);
+    Server.server.listen(PORT);
     Logger.log({
       username: "THIS",
       context: "[SERVER]",
@@ -46,10 +45,10 @@ class Server {
 
   static setBodyParser() {
     const bodyParser = require("body-parser");
-    Server.expressApp.use(Server.express.json());
-    Server.expressApp.use(bodyParser.urlencoded({ extended: true }));
-    Server.expressApp.use(bodyParser.json());
-    Server.expressApp.use(bodyParser.raw());
+    Server.app.use(Server.express.json());
+    Server.app.use(bodyParser.urlencoded({ extended: true }));
+    Server.app.use(bodyParser.json());
+    Server.app.use(bodyParser.raw());
     Logger.log({
       username: "THIS",
       context: "[SERVER]",
@@ -66,4 +65,6 @@ class Server {
   }
 }
 
-Server.start();
+module.exports = {
+  Server,
+};

@@ -9,6 +9,7 @@ class Prosocket {
   }
 
   static register(socket) {
+    Prosocket.connections = [];
     Prosocket.connections.push(socket);
   }
   static unregister(socket) {

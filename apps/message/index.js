@@ -45,7 +45,7 @@ class Message extends Prosocket {
     Message.io.sockets.emit(context, JSON.stringify(data), (err) => {
       //todo check errors in here
       if (err) {
-        response.status(200).send("PUSH MESSAGE FAILED");
+        response.status(404).send("PUSH MESSAGE FAILED");
         Logger.log({
           username: "THIS",
           context: `[Message-${context}]`,

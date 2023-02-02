@@ -5,5 +5,10 @@ const socket = io("ws://localhost:7777/", {
   auth: {
     token: "123",
     username: "tidjini",
+    id: "id",
   },
 });
+
+module.exports = {
+  socket,
+};

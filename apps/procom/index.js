@@ -1,4 +1,3 @@
-const { Logger } = require("../../logger");
 const { Prosocket } = require("../common");
 
 class Procom extends Prosocket {

@@ -1,8 +1,6 @@
 const { Logger } = require("../../logger");
 
 class Prosocket {
-  static connections = [];
-
   static auth(handshake) {
     //todo later set authentication process to this service
     const { auth, query } = handshake;
@@ -24,6 +22,7 @@ class Prosocket {
      */
     //if there is no socket in here log issue and return
     if (!Boolean(socket)) {
+      //todo later set this with real error.logs
       Logger.log({
         username: "SOCKET NONE",
         context: "[Prosocket]",

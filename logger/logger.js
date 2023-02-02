@@ -7,7 +7,7 @@ const RESULTS = {
   SEND_RESULTS: "SEND RESULTS",
 };
 const EXCEPTION_PREFIX = "Exception, due to ";
-
+const LOG_DEFAULT_FILENAME = "changes.log";
 //TODO LOGGER LOCATION DIRECTORY
 class Logger {
   //data to consume
@@ -16,9 +16,7 @@ class Logger {
   //context (procom-livriason)
   //function (avoir le total de tel produit (br) de 31/01/2020 a 31/01/2031)
   //results (fonction traitement correct ou pas) interception .. foreword .. get result .. send result success | failed ..
-  static date = new Date(Date.now());
-  static filename = "changes.log";
-  static content = "";
+
   static buid(data) {
     const {
       username,
@@ -27,7 +25,9 @@ class Logger {
       result,
       filename: otherFilename,
     } = data || {};
-    Logger.filename = otherFilename || Logger.filename;
+
+    Logger.date = new Date(Date.now());
+    Logger.filename = otherFilename || LOG_DEFAULT_FILENAME;
     Logger.content = `${Logger.date.toLocaleString()} | ${username} | ${context}  | ${verb}  | `;
 
     //todo later build real results

@@ -6,5 +6,5 @@ static
 media
 assets
 test.*
-test
+# test
 log

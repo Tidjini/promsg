@@ -34,47 +34,55 @@ class Message extends Prosocket {
   }
 
   static handleMessage(message, response) {
-    Message.push(message);
-    Message.sendResponse(response);
+    Message.push(message, response);
   }
 
-  static push(message) {
+  static push(message, response) {
     //push message for specific context (event-listeners)
     const { context, data } = message;
 
     //notify with context attribute in message
-    Message.io.sockets.emit(context, JSON.stringify(data), (response) => {
+    Message.io.sockets.emit(context, JSON.stringify(data), (err) => {
       //todo check errors in here
-      console.log(response.status);
-      Logger.log({
-        username: "THIS",
-        context: `[Message-${context}]`,
-        verb: "PUSH DATA",
-        result: `MESSAGE SUCCESS`,
-      });
+      if (err) {
+        response.status(200).send("PUSH MESSAGE FAILED");
+        Logger.log({
+          username: "THIS",
+          context: `[Message-${context}]`,
+          verb: "PUSH DATA",
+          result: `MESSAGE FAILED`,
+        });
+      } else {
+        Message.sendResponse(message, response);
+        Logger.log({
+          username: "THIS",
+          context: `[Message-${context}]`,
+          verb: "PUSH DATA",
+          result: `MESSAGE SUCCESS`,
+        });
+      }
     });
   }
 
-  static sendResponse(response) {
+  static sendResponse(data, response) {
     //return the response to http client
-    response.send(JSON.stringify(notification), (err) => {
-      if (err) {
-        response.send(err.toString());
-        Logger.log({
-          username: "THIS",
-          context: "[Message]",
-          verb: "RESPONSE",
-          result: `RESPONSE SENDED FAILD\n${err}`,
-        });
-        return;
-      }
+    response.status(200).send(JSON.stringify(data));
+    // if (err) {
+    //   response.send(err.toString());
+    //   Logger.log({
+    //     username: "THIS",
+    //     context: "[Message]",
+    //     verb: "RESPONSE",
+    //     result: `RESPONSE SENDED FAILD\n${err}`,
+    //   });
+    //   return;
+    // }
 
-      Logger.log({
-        username: "THIS",
-        context: "[MESSAGE]",
-        verb: "RESPONSE",
-        result: "RESPONSE SENDED SUCCESS",
-      });
+    Logger.log({
+      username: "THIS",
+      context: "[MESSAGE]",
+      verb: "RESPONSE",
+      result: "RESPONSE SENDED SUCCESS",
     });
   }
 }

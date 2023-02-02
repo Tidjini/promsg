@@ -8,6 +8,10 @@ class Procom {
      *
      * socket with id of connected client
      */
+
+    const { auth, query } = socket && socket.handshake;
+    console.log(auth);
+    console.log(query);
     Procom.connections.push(socket);
 
     Logger.log({

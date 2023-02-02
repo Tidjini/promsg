@@ -5,7 +5,7 @@ class Server {
   express;
   server;
   app;
-  socketio;
+  static socketio;
 
   static loadExpress() {
     //initialize express

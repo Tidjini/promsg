@@ -46,7 +46,7 @@ class Logger {
       Logger.onLogSuccess();
     });
   }
-  static log(verb, message) {
+  static logging(verb, message) {
     Logger.buid({
       username: "THIS",
       context: "[Message]",

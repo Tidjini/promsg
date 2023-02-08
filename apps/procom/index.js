@@ -10,17 +10,30 @@ class Procom extends Prosocket {
     //treat post body request as notification
     const { body: message } = request;
     if (!Boolean(message)) {
-      Logger.log("ON RECIEVE REQUEST", "EMPTY REQUEST (FAILED)");
+      Logger.logging("ON RECIEVE REQUEST", "EMPTY REQUEST (FAILED)");
       response.status(404).send({ result: "EMPTY REQUEST" });
       return;
     }
-    Logger.log("ON RECIEVE REQUEST", message + " (SUCCESS)");
-    //send loading as response
-    response.status(404).send({ result: "Wait for treatment..." });
+    Logger.logging("ON RECIEVE REQUEST", message + " (SUCCESS)");
+
+    Procom.foreword(request, response);
   }
 
-  static onForewording(request, response) {
-    //on forwording
+  static foreword(request, response) {
+    //forword to local service
+    const { context, data } = request.body;
+
+    //notify with context attribute in message
+    Procom.io.sockets.emit(context, JSON.stringify(data), (socket) => {
+      //todo check errors in here
+      if (!Boolean(socket)) {
+        response.status(404).send("FOREWORDING REQUEST (FAILED)");
+        Logger.logging("ON RECIEVE REQUEST", "EMPTY REQUEST (FAILED)");
+        return;
+      }
+      response.status(200).send(JSON.stringify(data));
+      Logger.logging("ON RECIEVE REQUEST", context + " (SUCCESS)");
+    });
   }
 
   static onReceiveResponse() {

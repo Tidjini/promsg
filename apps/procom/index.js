@@ -11,7 +11,7 @@ class Procom extends Prosocket {
     const { body: message } = request;
     if (!Boolean(message)) {
       Logger.logging("ON RECIEVE REQUEST", "EMPTY REQUEST (FAILED)");
-      response.status(404).send({ result: "EMPTY REQUEST" });
+      response.status(404).send({ failure: "EMPTY REQUEST" });
       return;
     }
     Logger.logging("ON RECIEVE REQUEST", message + " (SUCCESS)");
@@ -24,7 +24,7 @@ class Procom extends Prosocket {
     const message = request.body;
     if (!Boolean(message)) {
       Logger.logging("ON RECIEVE RESPONSE", "EMPTY RESPONSE (FAILED)");
-      response.status(404).send({ result: "EMPTY RESPONSE" });
+      response.status(404).send({ failure: "EMPTY RESPONSE" });
       //todo set failure message
       message = "Failure Message";
       request.body["data"] = message;
@@ -41,12 +41,14 @@ class Procom extends Prosocket {
     Procom.io.sockets.emit(context, JSON.stringify(data), (socket) => {
       //todo check errors in here
       if (!Boolean(socket)) {
-        response.status(404).send("FOREWORDING REQUEST (FAILED)");
+        response.status(404).send({ failure: "FOREWORDING REQUEST (FAILED)" });
         Logger.logging("ON RECIEVE REQUEST", "EMPTY REQUEST (FAILED)");
         return;
       }
       //waiting for response
-      response.status(200).send("Waiting For Response");
+      response
+        .status(200)
+        .send({ success: "RESPONSE FOREWORDED WITH SUCCESS" });
       Logger.logging("ON RECIEVE REQUEST", context + " (SUCCESS)");
     });
   }

@@ -46,6 +46,22 @@ class Logger {
       Logger.onLogSuccess();
     });
   }
+  static log(verb, message) {
+    Logger.buid({
+      username: "THIS",
+      context: "[Message]",
+      verb: verb,
+      result: message,
+    });
+
+    fs.appendFile(Logger.filename, Logger.content, (error) => {
+      if (error) {
+        Logger.onLogFailed(error);
+        return;
+      }
+      Logger.onLogSuccess();
+    });
+  }
 
   static onLogSuccess() {
     // console.log("test passed with success (file writing)");

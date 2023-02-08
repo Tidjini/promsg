@@ -15,14 +15,28 @@ class Procom extends Prosocket {
       return;
     }
     Logger.logging("ON RECIEVE REQUEST", message + " (SUCCESS)");
+    Procom.foreword(request, response);
+  }
 
+  static onReceiveResponse(request, response) {
+    //when recieving reponse from local service (like PROCOM)
+    //treat post body request as notification
+    const message = request.body;
+    if (!Boolean(message)) {
+      Logger.logging("ON RECIEVE RESPONSE", "EMPTY RESPONSE (FAILED)");
+      response.status(404).send({ result: "EMPTY RESPONSE" });
+      //todo set failure message
+      message = "Failure Message";
+      request.body["data"] = message;
+    }
+    Logger.logging("ON RECIEVE REQUEST", message + " (SUCCESS)");
+    //send response to other context and listener channel
     Procom.foreword(request, response);
   }
 
   static foreword(request, response) {
     //forword to local service
     const { context, data } = request.body;
-
     //notify with context attribute in message
     Procom.io.sockets.emit(context, JSON.stringify(data), (socket) => {
       //todo check errors in here
@@ -31,17 +45,10 @@ class Procom extends Prosocket {
         Logger.logging("ON RECIEVE REQUEST", "EMPTY REQUEST (FAILED)");
         return;
       }
-      response.status(200).send(JSON.stringify(data));
+      //waiting for response
+      response.status(200).send("Waiting For Response");
       Logger.logging("ON RECIEVE REQUEST", context + " (SUCCESS)");
     });
-  }
-
-  static onReceiveResponse() {
-    //on Receiving Response From Local service
-  }
-
-  static onSendResponse() {
-    //on Send Response To Remote client
   }
 }
 

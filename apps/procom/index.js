@@ -1,37 +1,52 @@
 const { Prosocket } = require("../common");
 const { Logger } = require("../../logger");
+
+const events = {
+  receive_request: "request",
+  receive_response: "response",
+};
+
 class Procom extends Prosocket {
   static build(express, socketio) {
     Procom.app = express;
     Procom.io = socketio;
   }
-  static onReceiveRequest(request, response) {
-    //when recieving request from client
-    //treat post body request as notification
-    const { body: message } = request;
-    if (!Boolean(message)) {
-      Logger.logging("ON RECIEVE REQUEST", "EMPTY REQUEST (FAILED)");
-      response.status(404).send({ failure: "EMPTY REQUEST" });
-      return;
-    }
-    Logger.logging("ON RECIEVE REQUEST", message + " (SUCCESS)");
-    Procom.foreword(request, response);
+
+  static onConnection(socket) {
+    Prosocket.onConnection(socket);
+    Procom.onReceiveRequest(socket);
+    Procom.onReceiveResponse(socket);
   }
 
-  static onReceiveResponse(request, response) {
-    //when recieving reponse from local service (like PROCOM)
-    //treat post body request as notification
-    const message = request.body;
-    if (!Boolean(message)) {
-      Logger.logging("ON RECIEVE RESPONSE", "EMPTY RESPONSE (FAILED)");
-      response.status(404).send({ failure: "EMPTY RESPONSE" });
-      //todo set failure message
-      message = "Failure Message";
-      request.body["data"] = message;
-    }
-    Logger.logging("ON RECIEVE REQUEST", message + " (SUCCESS)");
-    //send response to other context and listener channel
-    Procom.foreword(request, response);
+  static onReceiveRequest(socket) {
+    socket.on(events["receive_request"], (request) => {
+      console.log(request);
+      if (!Boolean(request)) {
+        Logger.logging("ON RECIEVE REQUEST", "EMPTY REQUEST (FAILED)");
+        socket.emit("REQUEST EMPTY", { failure: "EMPTY REQUEST", status: 404 });
+        return;
+      }
+      Logger.logging("ON RECIEVE REQUEST", request + " (SUCCESS)");
+      // Procom.foreword(request, response);
+    });
+  }
+
+  static onReceiveResponse(socket) {
+    socket.on(events["receive_response"], (response) => {
+      console.log(response);
+      if (!Boolean(response)) {
+        Logger.logging("ON RECIEVE RESPONSE", "EMPTY RESPONSE (FAILED)");
+        response.status(404).send({ failure: "EMPTY RESPONSE" });
+        socket.emit("RESPONSE EMPTY", {
+          failure: "EMPTY RESPONSE",
+          status: 404,
+        });
+        //todo set failure message
+      }
+      Logger.logging("ON RECIEVE RESPONSE", response + " (SUCCESS)");
+      //send response to other context and listener channel
+      // Procom.foreword(request, response);
+    });
   }
 
   static foreword(request, response) {

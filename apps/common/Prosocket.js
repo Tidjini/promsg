@@ -4,12 +4,10 @@ class Prosocket {
   static auth(handshake) {
     //todo later set authentication process to this service
     const { auth, query } = handshake;
-    console.log(auth);
-    console.log(query);
   }
+  static connections = [];
 
   static register(socket) {
-    Prosocket.connections = [];
     Prosocket.connections.push(socket);
   }
   static unregister(socket) {

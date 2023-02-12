@@ -1,12 +1,14 @@
 const { socket } = require("./test_connection");
 
 //In Local service (Procom API)
-socket.on("procom-request", (request) => {
-  console.log("procom event", request);
+socket.onAny((event, data) => {
+  console.log("procom event", event, data);
 });
 
-socket.on("connection", (socket) => {
-  console.log("on connection", socket);
+socket.emit("request", {
+  username: "CHAFFIK",
+  password: "170189",
+  socket: socket.id,
 });
 
 module.exports = {

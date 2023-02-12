@@ -7,8 +7,12 @@ Message.build(Server.app, io);
 Procom.build(Server.app, io);
 
 //todo later not just for messaging onConnection of global context
-io.sockets.on("connection", Message.onConnection);
+// io.sockets.on("connection", Message.onConnection);
 io.sockets.on("connection", Procom.onConnection);
+
+// io.on("request", (req) => {
+//   console.log("io.on.request", req);
+// });
 
 //catch post data in message to send it to connected users
 Server.app.post("/message", Message.onRecieve);

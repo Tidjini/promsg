@@ -14,26 +14,35 @@ class Procom extends Prosocket {
 
   static onConnection(socket) {
     Prosocket.onConnection(socket);
-    Procom.onReceiveRequest(socket);
-    Procom.onReceiveResponse(socket);
+    // socket.onAny((event, data) => {
+    //   console.log("Procom.io.sockets.onAny ", event, data);
+    // });
+    socket.on("request", (data) => {
+      console.log("socket.on.request [emit]", data.socket);
+      socket.emit("request-", data.socket);
+    });
+    // Prosocket.connections.forEach((socket) => {
+    // Procom.onReceiveRequest(socket);
+    // Procom.onReceiveResponse(socket);
+    // });
   }
 
   static onReceiveRequest(socket) {
     socket.on(events["receive_request"], (request) => {
-      console.log(request);
+      console.log("receive_request", request);
       if (!Boolean(request)) {
         Logger.logging("ON RECIEVE REQUEST", "EMPTY REQUEST (FAILED)");
         socket.emit("REQUEST EMPTY", { failure: "EMPTY REQUEST", status: 404 });
         return;
       }
       Logger.logging("ON RECIEVE REQUEST", request + " (SUCCESS)");
-      // Procom.foreword(request, response);
+      socket.emit(events["receive_request"], request);
     });
   }
 
   static onReceiveResponse(socket) {
     socket.on(events["receive_response"], (response) => {
-      console.log(response);
+      console.log("receive_response", response);
       if (!Boolean(response)) {
         Logger.logging("ON RECIEVE RESPONSE", "EMPTY RESPONSE (FAILED)");
         response.status(404).send({ failure: "EMPTY RESPONSE" });

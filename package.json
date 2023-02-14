@@ -4,7 +4,8 @@
   "description": "Procom messages service",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon test",
+    "test-request": "nodemon .\\test\\test_send_request.js",
+    "test-response": "nodemon .\\test\\test_send_response.js",
     "start": "nodemon index.js"
   },
   "repository": {

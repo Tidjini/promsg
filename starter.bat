@@ -1,4 +1,4 @@
-c:\
+cd c:\
 call pm2 kill
 cd c:\Projects\node\promsg
 call pm2 start gateway.js

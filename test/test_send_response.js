@@ -7,13 +7,19 @@ const { io } = require("socket.io-client");
 //   console.log("procom event", event, data);
 // });
 
-const socket = io("ws://localhost:19019/", {
+const socket = io("ws://vps.groupeamry.com:19019/", {
   reconnectionDelayMax: 10000,
   auth: {
     client: "local service",
   },
 });
 
+socket.on("connection", (data) => {
+  console.log("request", data);
+});
+socket.on("connected", (data) => {
+  console.log("request", data);
+});
 socket.on("request", (data) => {
   console.log("request", data);
   socket.emit("response", {

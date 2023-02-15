@@ -6,6 +6,7 @@
   "scripts": {
     "test-request": "nodemon .\\test\\test_send_request.js",
     "test-response": "nodemon .\\test\\test_send_response.js",
+    "localservice": "nodemon service.js",
     "start": "nodemon index.js"
   },
   "repository": {

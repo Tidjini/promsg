@@ -42,9 +42,9 @@ class Message extends Prosocket {
     const { context, data } = message;
 
     //notify with context attribute in message
-    Message.io.sockets.emit(context, JSON.stringify(data), (sockres) => {
+    Message.io.sockets.emit(context, JSON.stringify(data), (socket) => {
       //todo check errors in here
-      if (!Boolean(sockres)) {
+      if (!Boolean(socket)) {
         response.status(404).send("PUSH MESSAGE FAILED");
         Logger.log({
           username: "THIS",

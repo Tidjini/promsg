@@ -4,6 +4,10 @@ const { socket } = require("./test_connection");
 socket.on("tasks", (task) => {
   console.log("test event", task);
 });
+
+socket.on("driver-position", (drivers) => {
+  console.log("driver-position", drivers);
+});
 module.exports = {
   socket,
 };

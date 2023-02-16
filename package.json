@@ -6,6 +6,7 @@
   "scripts": {
     "test-request": "nodemon .\\test\\test_send_request.js",
     "test-response": "nodemon .\\test\\test_send_response.js",
+    "test-message": "nodemon .\\test\\test_message.js",
     "gateway": "nodemon gateway.js",
     "start": "nodemon index.js"
   },
